@@ -1,0 +1,18 @@
+<launch>
+
+    <!--Launch Python Camera Node 
+    <node name ="camera_node_ython" pkg = "computer_vision" type = "camera_node.py" output = "screen">
+    </node>
+    -->
+
+    <!--Launch Python Aruco Node-->
+    <node name ="aruco_node" pkg = "computer_vision" type = "aruco_node.py" output = "screen">
+    </node>
+   
+
+    <!--Launch C++ Camera Node-->
+    <node name ="camera_node_cpp" pkg = "computer_vision" type = "camera_node" output = "screen">
+    </node>
+
+
+</launch>
