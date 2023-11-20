@@ -19,7 +19,7 @@ Because of the Jetson TX2 support, we were limited to Ubuntu 18.04 OS and theref
 Other Package dependencies include MAVROS, Mavlink, and OpenCV(c++ and Python versions) which have to be installed and built separately first.
 
 ## **Software Installations**
-### 1. Have a proper installation of Ubunuto 18.04 (Bionic)
+### 1. Have a proper installation of Ubuntu 18.04 (Bionic)
 
   This could be done either through a dedicated linux machine, dual booting a laptop/PC, or using a USB Bootdrive with Ubuntu 18.04
 
