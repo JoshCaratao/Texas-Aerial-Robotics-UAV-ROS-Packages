@@ -49,6 +49,7 @@ If you wish to install an older version of OPENCV use git checkout as mentioned.
 
 *Checking if OpenCV is installed*
 
+
 Create a C++ file and copy the following
 
 
