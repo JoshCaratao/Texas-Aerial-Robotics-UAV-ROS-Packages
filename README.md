@@ -45,9 +45,10 @@ If you do not need the contrib_module files then on step 2, do not clone the “
 
 If you are installing this on the Jetson TX2 already, Make –j4 instead of –j8 this is due to the TX2 only having 4 cores. 
 
-If you wish to install an older version of OPENCV use git checkout as mentioned. Version 4.7 has worked so far on with Ubuntu 18.04, ROS MelodicI**
+If you wish to install an older version of OPENCV use git checkout as mentioned. Version 4.7 has worked so far on with Ubuntu 18.04, ROS Melodic**
 
 *Checking if OpenCV is installed*
+
 Create a C++ file and copy the following
 
 
