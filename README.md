@@ -20,11 +20,14 @@ Other Package dependencies include MAVROS, Mavlink, and OpenCV(c++ and Python ve
 
 ## **Software Installations**
 ### 1. Have a proper installation of Ubuntu 18.04 (Bionic)
-
-  This could be done either through a dedicated linux machine, dual booting a laptop/PC, or using a USB Bootdrive with Ubuntu 18.04
+  Before you can install and use ROS, you need a compatible Operating System. For ROS melodic (the ROS version I am using), you can use Ubuntu 18.04. Ubuntu is a popular open-source Linux distro based on Debian and can be installed from resources online.
+  
+  Using Ubuntu could be done either through a dedicated linux machine, dual booting a laptop/PC, or using a USB Bootdrive with Ubuntu 18.04
 
 ### 2. Install and build ROS Melodic
 
+  Robot Operating System (ROS), despite its name, ROS is not actually an operating system, but is essentially a framework that developers can use to build and manage complex robotic systems. It uses a subscriber/publisher messaging system that involves different nodes (scripts/programs) communicating to each other through "ros topics." These nodes can publish data, subscribe, or do both to different message topics. This allows you to modularize your system, swapping out or swapping in differnt nodes without having to worry too much about affecting your other programs. It also allows for your programs to run in parallel.
+  
   Once you are sure your system meets the minimum requirements for ROS Melodic (Ubuntu 18.04), you can continue with the installation of ROS Melodic
   Follow the instructions in the following link: https://wiki.ros.org/melodic/Installation/Ubuntu
 
