@@ -5,5 +5,5 @@
 	</include>
 
 	<!-- Our node to control the drone -->
-	<node pkg="controls" type="offb_node.cpp" name="offb_node" required="true" output="screen" />
+	<node pkg="controls" type="offb_node" name="offb_node" required="true" output="screen" />
 </launch>
