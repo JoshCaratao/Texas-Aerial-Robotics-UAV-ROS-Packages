@@ -6,6 +6,10 @@
 
 mavros_msgs::State current_state;
 geomtry_msgs::PoseStamped current_pose;
+bool takeoff = false;
+
+//set arbitrary aruco marker location for simulation
+std::vector<int> aruco_pose = {5,5,0}; 
 
 //This is a callback function that is invoked when a new state message is published. Updates knowledge of the current state of the drone
 void state_callback(const mavros_msgs::State::ConstPtr& msg){
@@ -70,6 +74,50 @@ int main(int argc, char**argv){
 
     //Set a timer to time requests for arming 
     ros::Time last_request = ros::Time::now();
+
+    //Start main loop
+    while(ros::ok()){
+
+        ros::spinOnce();
+
+        //Check if drone is NOT in offboard mode
+        if(current_state.mode != "OFFBOARD" && ros::Time::now() - last_request > ros::Duration(5.0)){
+            //If not in offboard mode, request offboard mode
+            if(set_mode_client.call(offboard_set_mode) && offboard_set_mode.response.mode_sent){
+                ROS_INFO("Offboard Enabled")
+            }
+            last_request = ros::Time::now();
+        }
+
+        //Ater enabling offboard, check if drone is armed. If not armed, request to arm drone
+        else{
+            if(!current_state.armed && ros::Time::now() - last_request > ros::Duration(5.0)){
+                if( arming_client.call(arm_cmd) && arm_cmd.response.success){
+                    ROS_INFO("Vehicle armed");
+                }
+            }
+            last_request = ros::Time::now();
+        }
+
+        //Check if drone has taken off already.(different methods to do this)
+        if(takeoff == false || current_pose.pose.position.z == 0){
+            //takeoff code
+        }
+
+        //If drone has already taken off, begin PID Loop
+        else{
+
+            //PID Code
+
+        }
+
+
+
+
+    }
+
+
+
 
 
 
