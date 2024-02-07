@@ -9,7 +9,7 @@ geomtry_msgs::PoseStamped current_pose;
 bool takeoff = false;
 
 //set arbitrary aruco marker location for simulation
-std::vector<int> aruco_pose = {5,5,0}; 
+std::vector<int> aruco_pose = {10,10,0}; 
 
 //This is a callback function that is invoked when a new state message is published. Updates knowledge of the current state of the drone
 void state_callback(const mavros_msgs::State::ConstPtr& msg){
@@ -49,12 +49,12 @@ int main(int argc, char**argv){
     }
 
     //Initialize the messages for publishing
-    geometry_msgs::PoseStamped pose;
+    geometry_msgs::PoseStamped pose_commands;
     geometry_msgs::Twist vel_commands;
 
-    pose.pose.position.x = 0;
-    pose.pose.position.y = 0;
-    pose.pose.position.z = 0;
+    pose_commands.pose.position.x = 0;
+    pose_commands.pose.position.y = 0;
+    pose_commands.pose.position.z = 0;
 
     //These probably depend on the orientation of the pixhawk flight controller on the drone frame
     vel_commands.linear.x = 0;  //Forward velocity  
@@ -63,6 +63,17 @@ int main(int argc, char**argv){
     vel_commands.angular.x = 0; //Roll Rate
     vel_commands.angular.y = 0; //Pitch Rate
     vel_commands.angular.z = 0; //Yaw Rate
+
+    //Initialize PID Loop Variables
+    double last_x_error;
+    double last_y_error;
+    double last_z_error;
+
+    double total_x_error;
+    double total_y_error;
+    double total_z_error; 
+    
+
 
 
     //Initialize service request commands
@@ -102,6 +113,11 @@ int main(int argc, char**argv){
         //Check if drone has taken off already.(different methods to do this)
         if(takeoff == false || current_pose.pose.position.z == 0){
             //takeoff code
+            pose_commands.pose.position.x = 0;
+            pose_commands.pose.position.y = 0;
+            pose_commands.pose.position.z = 7;
+
+            local_position_pub.publish(pose_commands);
         }
 
         //If drone has already taken off, begin PID Loop
@@ -117,9 +133,12 @@ int main(int argc, char**argv){
     }
 
 
+    //start z PID loop? or switch modes for landing?
 
+    return 0;
+}
 
-
-
+std::vector<double>PID(double error, double last_error) {
+    
 
 }
