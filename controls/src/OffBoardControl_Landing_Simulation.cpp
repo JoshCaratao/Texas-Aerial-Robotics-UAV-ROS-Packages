@@ -5,7 +5,7 @@
 
 
 mavros_msgs::State current_state;
-geomtry_msgs::PoseStamped current_pose;
+geometry_msgs::PoseStamped current_pose;
 bool takeoff = false;
 
 //set arbitrary aruco marker location for simulation
@@ -17,7 +17,7 @@ void state_callback(const mavros_msgs::State::ConstPtr& msg){
 }
 
 //This callback function retrieved and updates the local pose of the drone (for PID simulation purposes mainly)
-void state_callback(const geometry_msgs::PoseStamped::ConstPtr& msg){
+void local_pos_callback(const geometry_msgs::PoseStamped::ConstPtr& msg){
     current_pose = *msg;
 }
 
@@ -35,10 +35,10 @@ int main(int argc, char**argv){
     ros::Publisher local_position_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
     ros::Publisher velocity_pub = nh.advertise<geometry_msgs::Twist>("mavros/setpoint_velocity/cmd_vel",10);
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
-    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/set_mode");
+    ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
 
     //the setpoint publishing rate MUST be faster than 2hz
-    ros::Rate rate(20.0)
+    ros::Rate rate(20.0);
 
 
     //This loop ensures that the rest of the node doesn't run until ROS has connected to the flight control unit. 
@@ -89,13 +89,16 @@ int main(int argc, char**argv){
     //Start main loop
     while(ros::ok()){
 
+        //checks for incoming messages (subscriptions) and invokes callback function if there are
         ros::spinOnce();
+
+        //Could add a section here to check drone local position and send out to ros info
 
         //Check if drone is NOT in offboard mode
         if(current_state.mode != "OFFBOARD" && ros::Time::now() - last_request > ros::Duration(5.0)){
             //If not in offboard mode, request offboard mode
             if(set_mode_client.call(offboard_set_mode) && offboard_set_mode.response.mode_sent){
-                ROS_INFO("Offboard Enabled")
+                ROS_INFO("Offboard Enabled");
             }
             last_request = ros::Time::now();
         }
@@ -103,12 +106,14 @@ int main(int argc, char**argv){
         //Ater enabling offboard, check if drone is armed. If not armed, request to arm drone
         else{
             if(!current_state.armed && ros::Time::now() - last_request > ros::Duration(5.0)){
-                if( arming_client.call(arm_cmd) && arm_cmd.response.success){
+                if( arming_client.call(arm_command) && arm_cmd.response.success){
                     ROS_INFO("Vehicle armed");
                 }
             }
             last_request = ros::Time::now();
         }
+
+        ros::spinOnce();
 
         //Check if drone has taken off already.(different methods to do this)
         if(takeoff == false || current_pose.pose.position.z == 0){
@@ -118,18 +123,21 @@ int main(int argc, char**argv){
             pose_commands.pose.position.z = 7;
 
             local_position_pub.publish(pose_commands);
+
+            takeoff = true;
         }
 
         //If drone has already taken off, begin PID Loop
         else{
 
             //PID Code
+            //Add a while loop here too?
 
         }
 
 
-
-
+        //This ensures that our main loop runs at specified frequency we set above
+        rate.sleep();
     }
 
 
