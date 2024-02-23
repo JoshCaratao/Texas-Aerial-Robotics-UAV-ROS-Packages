@@ -8,6 +8,7 @@
 
 mavros_msgs::State current_state;
 geometry_msgs::PoseStamped current_pose;
+bool takeoff = false;
 
 //set arbitrary aruco marker location for simulation
 std::vector<int> aruco_pose = {10,10,0}; 
@@ -65,8 +66,9 @@ int main(int argc, char**argv){
     vel_commands.twist.angular.x = 0; //Roll Rate
     vel_commands.twist.angular.y = 0; //Pitch OFFBOARD
 
-    PID pidX(0.01, 0, 0);
-    PID pidY(0.01, 0, 0);
+    PID pidX(0.1, 0, 0);
+    PID pidY(0.1, 0, 0);
+    PID pidZ(0.01, 0, 0);
 
     //send a few setpoints before starting
     for(int i = 200; ros::ok() && i > 0; --i){
@@ -116,29 +118,40 @@ int main(int argc, char**argv){
             }
         }
     
-        
         ros::spinOnce();
 
         //Check if drone has taken off already.(different methods to do this)
         double z_pos = current_pose.pose.position.z;
+        double x_pos = current_pose.pose.position.x;
+        double y_pos = current_pose.pose.position.y;
+        ROS_INFO("CURRENT X: %f",x_pos);
+        ROS_INFO("CURRENT Y: %f",y_pos);
         ROS_INFO("CURRENT Z: %f",z_pos);
-        if(current_pose.pose.position.z < 1){
+    
+        if(current_pose.pose.position.z < 2 && !takeoff){
             //takeoff code
             local_position_pub.publish(pose_commands);
         }
         else{
 
+            if(!takeoff){
+                takeoff = true;
+            }
+
             //Calculate Errors
             double errorX = aruco_pose[0] - current_pose.pose.position.x;
             double errorY = aruco_pose[1] - current_pose.pose.position.y;
-            
+            double errorZ = 2 - current_pose.pose.position.z;
     
             //SET VELOCITIES FROM PID
             vel_commands.twist.linear.x = pidX.calculate(errorX, ros::Time::now().toSec());
             vel_commands.twist.linear.y = pidY.calculate(errorY, ros::Time::now().toSec());
-
+            vel_commands.twist.linear.z = pidZ.calculate(errorZ, ros::Time::now().toSec());
 
             velocity_pub.publish(vel_commands);
+
+            ROS_INFO("xVel: %f", vel_commands.twist.linear.x);
+            ROS_INFO("yVel: %f", vel_commands.twist.linear.y);
         }
 
 
