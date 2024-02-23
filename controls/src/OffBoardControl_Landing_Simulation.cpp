@@ -2,11 +2,12 @@
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
-
+#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/TwistStamped.h>
+#include "controls/PID.h"
 
 mavros_msgs::State current_state;
 geometry_msgs::PoseStamped current_pose;
-bool takeoff = false;
 
 //set arbitrary aruco marker location for simulation
 std::vector<int> aruco_pose = {10,10,0}; 
@@ -32,8 +33,8 @@ int main(int argc, char**argv){
     //Initialize various subscribers and publishers
     ros::Subscriber drone_state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 10, state_callback);
     ros::Subscriber drone_local_pos_sub = nh.subscribe<geometry_msgs::PoseStamped>("/mavros/local_position/pose", 10, local_pos_callback);
-    ros::Publisher local_position_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 10);
-    ros::Publisher velocity_pub = nh.advertise<geometry_msgs::Twist>("mavros/setpoint_velocity/cmd_vel",10);
+    ros::Publisher local_position_pub = nh.advertise<geometry_msgs::PoseStamped>("mavros/setpoint_position/local", 30);
+    ros::Publisher velocity_pub = nh.advertise<geometry_msgs::TwistStamped>("mavros/setpoint_velocity/cmd_vel", 10);
     ros::ServiceClient arming_client = nh.serviceClient<mavros_msgs::CommandBool>("mavros/cmd/arming");
     ros::ServiceClient set_mode_client = nh.serviceClient<mavros_msgs::SetMode>("mavros/set_mode");
 
@@ -50,31 +51,32 @@ int main(int argc, char**argv){
 
     //Initialize the messages for publishing
     geometry_msgs::PoseStamped pose_commands;
-    geometry_msgs::Twist vel_commands;
+    geometry_msgs::TwistStamped vel_commands;
 
     pose_commands.pose.position.x = 0;
     pose_commands.pose.position.y = 0;
-    pose_commands.pose.position.z = 0;
+    pose_commands.pose.position.z = 2;
 
+   
     //These probably depend on the orientation of the pixhawk flight controller on the drone frame
-    vel_commands.linear.x = 0;  //Forward velocity  
-    vel_commands.linear.y = 0;  //left/right velocity 
-    vel_commands.linear.z = 0;  //up/down velocity 
-    vel_commands.angular.x = 0; //Roll Rate
-    vel_commands.angular.y = 0; //Pitch Rate
-    vel_commands.angular.z = 0; //Yaw Rate
+    vel_commands.twist.linear.x = 0;  //Forward velocity  
+    vel_commands.twist.linear.y = 0;  //left/right velocity 
+    vel_commands.twist.linear.z = 0;  //up/down velocity 
+    vel_commands.twist.angular.x = 0; //Roll Rate
+    vel_commands.twist.angular.y = 0; //Pitch OFFBOARD
 
-    //Initialize PID Loop Variables
-    double last_x_error;
-    double last_y_error;
-    double last_z_error;
+    PID pidX(0.01, 0, 0);
+    PID pidY(0.01, 0, 0);
 
-    double total_x_error;
-    double total_y_error;
-    double total_z_error; 
-    
+    //send a few setpoints before starting
+    for(int i = 200; ros::ok() && i > 0; --i){
+        local_position_pub.publish(pose_commands);
+        ros::spinOnce();
+        rate.sleep();
+    }
 
-
+    std::string mode = current_state.mode;
+    ROS_INFO("CURRENT MODE: %s",mode.c_str());
 
     //Initialize service request commands
     mavros_msgs::SetMode offboard_set_mode;
@@ -83,61 +85,68 @@ int main(int argc, char**argv){
     mavros_msgs::CommandBool arm_command;
     arm_command.request.value = true;
 
+
     //Set a timer to time requests for arming 
     ros::Time last_request = ros::Time::now();
 
     //Start main loop
     while(ros::ok()){
-
+        
         //checks for incoming messages (subscriptions) and invokes callback function if there are
         ros::spinOnce();
 
         //Could add a section here to check drone local position and send out to ros info
-
-        //Check if drone is NOT in offboard mode
-        if(current_state.mode != "OFFBOARD" && ros::Time::now() - last_request > ros::Duration(5.0)){
-            //If not in offboard mode, request offboard mode
-            if(set_mode_client.call(offboard_set_mode) && offboard_set_mode.response.mode_sent){
-                ROS_INFO("Offboard Enabled");
+        
+        //Check if drone is armed and if not, request to arm the drone
+        if(!current_state.armed && ros::Time::now() - last_request > ros::Duration(5.0)){
+            if(arming_client.call(arm_command) && arm_command.response.success){
+                ROS_INFO("Vehicle armed");
             }
+
             last_request = ros::Time::now();
         }
 
-        //Ater enabling offboard, check if drone is armed. If not armed, request to arm drone
-        else{
-            if(!current_state.armed && ros::Time::now() - last_request > ros::Duration(5.0)){
-                if( arming_client.call(arm_command) && arm_cmd.response.success){
-                    ROS_INFO("Vehicle armed");
+        else{ //Once armed, request to switch to offboard mode
+            if(current_state.mode != "OFFBOARD" && (ros::Time::now() - last_request > ros::Duration(5.0))){
+                //If not in offboard mode, request offboard mode
+                if(set_mode_client.call(offboard_set_mode) && offboard_set_mode.response.mode_sent){
+                    ROS_INFO("Offboard Enabled");
                 }
+                last_request = ros::Time::now();
             }
-            last_request = ros::Time::now();
         }
-
+    
+        
         ros::spinOnce();
 
         //Check if drone has taken off already.(different methods to do this)
-        if(takeoff == false || current_pose.pose.position.z == 0){
+        double z_pos = current_pose.pose.position.z;
+        ROS_INFO("CURRENT Z: %f",z_pos);
+        if(current_pose.pose.position.z < 1){
             //takeoff code
-            pose_commands.pose.position.x = 0;
-            pose_commands.pose.position.y = 0;
-            pose_commands.pose.position.z = 7;
-
             local_position_pub.publish(pose_commands);
-
-            takeoff = true;
         }
-
-        //If drone has already taken off, begin PID Loop
         else{
 
-            //PID Code
-            //Add a while loop here too?
+            //Calculate Errors
+            double errorX = aruco_pose[0] - current_pose.pose.position.x;
+            double errorY = aruco_pose[1] - current_pose.pose.position.y;
+            
+    
+            //SET VELOCITIES FROM PID
+            vel_commands.twist.linear.x = pidX.calculate(errorX, ros::Time::now().toSec());
+            vel_commands.twist.linear.y = pidY.calculate(errorY, ros::Time::now().toSec());
 
+
+            velocity_pub.publish(vel_commands);
         }
 
 
         //This ensures that our main loop runs at specified frequency we set above
         rate.sleep();
+        mode = current_state.mode;
+        ROS_INFO("CURRENT MODE: %s",mode.c_str());
+
     }
 
 
@@ -146,7 +155,3 @@ int main(int argc, char**argv){
     return 0;
 }
 
-std::vector<double>PID(double error, double last_error) {
-    
-
-}
