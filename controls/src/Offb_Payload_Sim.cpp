@@ -84,8 +84,8 @@ int main(int argc, char**argv){
     vel_commands.twist.angular.x = 0; //Roll Rate
     vel_commands.twist.angular.y = 0; //Pitch OFFBOARD
 
-    PID pidX(0.13, 0.05, 0.02);
-    PID pidY(0.13, 0.05, 0.02);
+    PID pidX(0.2, 0.05, 0.005);
+    PID pidY(0.2, 0.05, 0.005);
     PID pidZ(0.1, 0.75, 0);
 
     std::string mode = current_state.mode;
@@ -186,9 +186,9 @@ int main(int argc, char**argv){
             ROS_INFO("yVel: %f", vel_commands.twist.linear.y);
             ROS_INFO("zVel: %f", vel_commands.twist.linear.z);
 
-            if(std::abs(errorX) < 0.5 && std::abs(errorY) < 0.5 && !payload_deployed){
+            if(std::abs(errorX) < 0.2 && std::abs(errorY) < 0.2 && !payload_deployed){
                 convergeTime += ros::Time::now().toSec() - last_loop_time.toSec();
-                if(convergeTime >= 2){
+                if(convergeTime >= 3){
                     payload_deployed = true;
                 }
             }
