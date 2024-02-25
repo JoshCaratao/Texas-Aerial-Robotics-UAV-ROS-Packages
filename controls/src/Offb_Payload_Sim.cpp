@@ -5,15 +5,24 @@
 #include <std_msgs/Bool.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/TwistStamped.h>
+#include <cstdlib>
 #include "controls/PID.h"
 
 mavros_msgs::State current_state;
 geometry_msgs::PoseStamped current_pose;
 bool aruco_detected = false;
 bool takeoff = false;
+bool payload_deployed = false;
 
 //set arbitrary aruco marker location for simulation
 std::vector<int> aruco_pose = {10,10,2}; 
+
+//Set position of home base
+std::vector<int> home_base = {0,0,2};
+
+//set target position coordinate
+std::vector<int> target_pos = {0,0,0};
+
 
 //This is a callback function that is invoked when a new state message is published. Updates knowledge of the current state of the drone
 void state_callback(const mavros_msgs::State::ConstPtr& msg){
@@ -96,6 +105,10 @@ int main(int argc, char**argv){
     //Set a timer to time requests for arming 
     ros::Time last_request = ros::Time::now();
 
+    //Set timers for deploying payload sim
+    ros::Time last_loop_time = ros::Time::now();
+    double convergeTime = 0;
+
     //send a few setpoints before starting
     for(int i = 200; ros::ok() && i > 0; --i){
         local_position_pub.publish(pose_commands);
@@ -140,7 +153,7 @@ int main(int argc, char**argv){
         ROS_INFO("CURRENT Y: %f",y_pos);
         ROS_INFO("CURRENT Z: %f",z_pos);
     
-        if(current_pose.pose.position.z < 0.5 && !takeoff){
+        if(current_pose.pose.position.z < 2 && !takeoff){
             //takeoff code
             local_position_pub.publish(pose_commands);
         }
@@ -150,10 +163,17 @@ int main(int argc, char**argv){
                 takeoff = true;
             }
 
+            if(!payload_deployed){
+                target_pos = aruco_pose;
+            }
+            else{
+                target_pos = home_base;
+            }
+
             //Calculate Errors
-            double errorX = aruco_pose[0] - current_pose.pose.position.x;
-            double errorY = aruco_pose[1] - current_pose.pose.position.y;
-            double errorZ = aruco_pose[2] - current_pose.pose.position.z;
+            double errorX = target_pos[0] - current_pose.pose.position.x;
+            double errorY = target_pos[1] - current_pose.pose.position.y;
+            double errorZ = target_pos[2] - current_pose.pose.position.z;
     
             //SET VELOCITIES FROM PID
             vel_commands.twist.linear.x = pidX.calculate(errorX, ros::Time::now().toSec());
@@ -165,7 +185,19 @@ int main(int argc, char**argv){
             ROS_INFO("xVel: %f", vel_commands.twist.linear.x);
             ROS_INFO("yVel: %f", vel_commands.twist.linear.y);
             ROS_INFO("zVel: %f", vel_commands.twist.linear.z);
+
+            if(std::abs(errorX) < 0.5 && std::abs(errorY) < 0.5 && !payload_deployed){
+                convergeTime += ros::Time::now().toSec() - last_loop_time.toSec();
+                if(convergeTime >= 2){
+                    payload_deployed = true;
+                }
+            }
+
+
         }
+
+        //this is for the converge time
+        last_loop_time = ros::Time::now();
 
 
         //This ensures that our main loop runs at specified frequency we set above
@@ -174,7 +206,6 @@ int main(int argc, char**argv){
         ROS_INFO("CURRENT MODE: %s",mode.c_str());
 
     }
-
 
     return 0;
 }
