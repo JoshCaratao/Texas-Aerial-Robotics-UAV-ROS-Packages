@@ -17,6 +17,7 @@ class PID {
         double totalPID;
         double lastError;
         double lastTime;
+        double totalError;
 
 };
 
