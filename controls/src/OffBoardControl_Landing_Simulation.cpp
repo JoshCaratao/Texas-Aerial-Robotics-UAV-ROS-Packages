@@ -11,7 +11,7 @@ geometry_msgs::PoseStamped current_pose;
 bool takeoff = false;
 
 //set arbitrary aruco marker location for simulation
-std::vector<int> aruco_pose = {10,10,0}; 
+std::vector<int> aruco_pose = {10,10,2}; 
 
 //This is a callback function that is invoked when a new state message is published. Updates knowledge of the current state of the drone
 void state_callback(const mavros_msgs::State::ConstPtr& msg){
@@ -30,6 +30,7 @@ int main(int argc, char**argv){
 
     //Create Node Handle (Necessary for communication with ROS system)
     ros::NodeHandle nh;
+
 
     //Initialize various subscribers and publishers
     ros::Subscriber drone_state_sub = nh.subscribe<mavros_msgs::State>("mavros/state", 10, state_callback);
@@ -66,9 +67,9 @@ int main(int argc, char**argv){
     vel_commands.twist.angular.x = 0; //Roll Rate
     vel_commands.twist.angular.y = 0; //Pitch OFFBOARD
 
-    PID pidX(0.1, 0, 0);
-    PID pidY(0.1, 0, 0);
-    PID pidZ(0.01, 0, 0);
+    PID pidX(0.13, 0.05, 0.02);
+    PID pidY(0.13, 0.05, 0.02);
+    PID pidZ(0.1, 0.75, 0);
 
     //send a few setpoints before starting
     for(int i = 200; ros::ok() && i > 0; --i){
@@ -134,6 +135,7 @@ int main(int argc, char**argv){
         }
         else{
 
+
             if(!takeoff){
                 takeoff = true;
             }
@@ -141,7 +143,7 @@ int main(int argc, char**argv){
             //Calculate Errors
             double errorX = aruco_pose[0] - current_pose.pose.position.x;
             double errorY = aruco_pose[1] - current_pose.pose.position.y;
-            double errorZ = 2 - current_pose.pose.position.z;
+            double errorZ = aruco_pose[2] - current_pose.pose.position.z;
     
             //SET VELOCITIES FROM PID
             vel_commands.twist.linear.x = pidX.calculate(errorX, ros::Time::now().toSec());
@@ -152,6 +154,7 @@ int main(int argc, char**argv){
 
             ROS_INFO("xVel: %f", vel_commands.twist.linear.x);
             ROS_INFO("yVel: %f", vel_commands.twist.linear.y);
+            ROS_INFO("zVel: %f", vel_commands.twist.linear.z);
         }
 
 
@@ -162,8 +165,6 @@ int main(int argc, char**argv){
 
     }
 
-
-    //start z PID loop? or switch modes for landing?
 
     return 0;
 }
