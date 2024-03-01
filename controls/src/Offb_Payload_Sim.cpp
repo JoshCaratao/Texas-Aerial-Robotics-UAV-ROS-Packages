@@ -15,10 +15,10 @@ bool takeoff = false;
 bool payload_deployed = false;
 
 //set arbitrary aruco marker location for simulation
-std::vector<int> aruco_pose = {10,10,2}; 
+std::vector<int> aruco_pose = {10,10,2.5}; 
 
 //Set position of home base
-std::vector<int> home_base = {0,0,2};
+std::vector<int> home_base = {0,0,2.5};
 
 //set target position coordinate
 std::vector<int> target_pos = {0,0,0};
