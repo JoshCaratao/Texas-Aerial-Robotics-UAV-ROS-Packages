@@ -83,6 +83,10 @@ The output should be similar to the following
   
 # Running Offboard Control Simulations in Gazebo
 
+##Catkin Workspace
+Ensure your catkin workspace directory has been made as this is where the ROS packages and scripts are stored.
+
+##PX4-Autopilot Software
 
 
 
