@@ -91,7 +91,13 @@ Download and install the PX4-Autopilo software. This is crucial for running soft
 
 Use the link below and follow the instructions for "Download the PX4 Code"
 
-  https://docs.px4.io/main/en/dev_setup/building_px4.html
+   https://docs.px4.io/main/en/dev_setup/building_px4.html
+
+   Alternatively, just copy and paste this command into your terminal in your home directory
+
+   git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+
+ 
 
 
 
