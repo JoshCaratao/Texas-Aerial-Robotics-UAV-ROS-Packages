@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
 )
 
-find_package(OpenCV 4.8.0 REQUIRED)
+#find_package(OpenCV 4.8.0 REQUIRED)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -131,6 +131,10 @@ target_link_libraries(offb_node ${catkin_LIBRARIES})
 
 add_executable(OffBoardControl_Landing_Simulation src/OffBoardControl_Landing_Simulation.cpp src/PID.cpp)
 target_link_libraries(OffBoardControl_Landing_Simulation ${catkin_LIBRARIES})
+
+
+add_executable(Offb_Payload_Sim src/Offb_Payload_Sim.cpp src/PID.cpp)
+target_link_libraries(Offb_Payload_Sim ${catkin_LIBRARIES})
 
 add_library(PID src/PID.cpp)
 target_link_libraries(PID ${catkin_LIBRARIES})
