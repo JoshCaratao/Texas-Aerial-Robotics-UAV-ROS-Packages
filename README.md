@@ -104,19 +104,26 @@ Use the link below and follow the instructions for "Download the PX4 Code"
 
   You should see a folder called "PX4-Autopilot" in your home directory. We will do more with this later
 
-## 3) Clone this repository
+## 3) Clone this ROS Package Repository
 
-Next, we need to clone and download this repository into your catkin_ws 
+Next, we need to clone and download this repository into your catkin_ws. These packages provide necessary scripts/Nodes for simulating precision positioning over a detected aruco marker 
 
-First, navigate to your catkin workspace directory using 
-
+First, navigate to your catkin workspace directory and into the "src" folder using
 ```
-cd ~/catkin_ws/
+cd ~/catkin_ws/src
 ```
+This is important as our ROS Packages need to be in this folder within our catkin workspace
+
 After navigating into your catkin workspace, clone this repository into with the following command
+```
+git clone https://github.com/JoshCaratao/Unmanned-Aerial-Vehicle-ROS-Packages.git 
+```
+You should now see both of these packages in the "src" folder of your catkin workspace
+
+within your catkin workspace directory, rebuild the workspace and newly installed packages using the following command to ensure all the packages build correctly and that there arent any issues.
 
 ```
-git clone 
+catkin build
 ```
   
  
