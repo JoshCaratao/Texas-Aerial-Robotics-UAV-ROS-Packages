@@ -20,7 +20,7 @@ Additionally, our drone uses a Nvidia Jetson TX2 paired with an orbitty carrier 
 Because of the Jetson TX2 support, we were limited to Ubuntu 18.04 OS and therefore, to developing these packages in ROS Melodic.
 Other Package dependencies include MAVROS, Mavlink, and OpenCV(c++ and Python versions) which have to be installed and built separately first.
 
-## **Software Installations**
+## **Ubuntu and ROS Software Installations**
 ### 1. Have a proper installation of Ubuntu 18.04 (Bionic)
   Before you can install and use ROS, you need a compatible Operating System. For ROS melodic (the ROS version I am using), you can use Ubuntu 18.04. Ubuntu is a popular open-source Linux distro based on Debian and can be installed from resources online.
   
@@ -79,3 +79,14 @@ After compiling, run the code using the following command
 The output should be similar to the following
 
     The current OpenCV version is 4.8.0
+
+  
+# Running Offboard Control Simulations in Gazebo
+
+
+
+
+
+
+
+
