@@ -85,10 +85,10 @@ The output should be similar to the following
   
 # Running Offboard Control Simulations in Gazebo
 
-## 1)Catkin Workspace
+## 1) Catkin Workspace
 Ensure your catkin workspace directory has been made as this is where the ROS packages and scripts are stored.
 
-## 2)PX4-Autopilot Software
+## 2) PX4-Autopilot Software
 Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly.
 
 Use the link below and follow the instructions for "Download the PX4 Code"
@@ -102,9 +102,27 @@ Use the link below and follow the instructions for "Download the PX4 Code"
 ```
   This will clone the very latest ("main") version of the PX4-Autopilot Repository into the current directory you are in.
 
-  You should see a folder called "PX4-Autopilot" in your home directory. We will do more with this later
+  You should see a folder called "PX4-Autopilot" in your home directory.
+  ### NOTE: you may run into compatibility issues with OpenCV later. If so, add a line into the CMakeLists.txt file of the "sitl_gazebo-classic" folder in the PX4-Autopilot folder. If you need to do this, navigate to the proper directory
+```
+cd /home/ubuntu/PX4-Autopilot/Tools/simulation/gazebo-classic
+``` 
+within this directory, open the CMakeLists.txt file in your code editor and add the following line under "find_package(gazebo REQUIRED)"
 
-## 3) Clone this ROS Package Repository
+```
+find_package (OpenCV 3.2.0 REQUIRED)
+```
+This should ensure the the simulation uses the OpenCV version installed from your ROS installation rather than an OpenCV version you may have installed system-wide.
+
+## 3) Clone and install MAVROS and MAVlink Packages
+These packages are necessary for our computer/jetson to communicate and interact with our pixhawk/flghtcontroller. MAVROS acts as a bridge between our ROS system, translating our ROS messages into MAVLink messages that our pixhawk and PX4-Autopilot software can understand.
+
+Follow this following tutorial for installing ROS with MAVROS through "Source Installation"
+```
+https://docs.px4.io/main/en/ros/mavros_installation.html
+```
+
+## 4) Clone this ROS Package Repository
 
 Next, we need to clone and download this repository into your catkin_ws. These packages provide necessary scripts/Nodes for simulating precision positioning over a detected aruco marker 
 
