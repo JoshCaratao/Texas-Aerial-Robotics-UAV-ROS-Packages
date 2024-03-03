@@ -121,6 +121,11 @@ Follow this following tutorial for installing ROS with MAVROS through "Source In
 ```
 https://docs.px4.io/main/en/ros/mavros_installation.html
 ```
+Make sure to rebuild your catkin workspace after installing these by running the following command in your catkin workspace
+
+```
+catkin build
+```
 
 ## 4) Clone this ROS Package Repository
 
