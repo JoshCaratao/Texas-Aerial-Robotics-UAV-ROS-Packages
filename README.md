@@ -148,6 +148,22 @@ within your catkin workspace directory, rebuild the workspace and newly installe
 ```
 catkin build
 ```
+
+## 5) Download Simulation models/files
+
+In order to simulate a drone with a downward facing camera and a world with aruco markers, we need to download the following files and place them in the proper directories.
+
+Clone my "UAV Simulation Files" Repository into your home directory (doesn't really need to be in the catkin workspace as we will be moving these after downloading them).
+
+```
+git clone https://github.com/JoshCaratao/UAV-Simulation-Files.git
+```
+
+Included are a variety of gazebo model files, world file and a launch file necessary for our simulations.
+
+
+
+
   
  
 
