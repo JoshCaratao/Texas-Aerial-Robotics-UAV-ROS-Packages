@@ -6,4 +6,8 @@
 
 	<!-- Our node to control the drone -->
 	<node pkg="controls" type="Offb_Payload_Sim" name="Offb_Payload_Sim" required="true" output="screen" />
+
+	<!-- Our computer vision node to run aruco marker detection through simulated camera -->
+	<node pkg="computer_vision" type="aruco_node_sim.py" name="aruco_node_sim" required="true" output="screen" />
+	
 </launch>
