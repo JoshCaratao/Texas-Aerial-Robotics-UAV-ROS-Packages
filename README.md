@@ -83,10 +83,15 @@ The output should be similar to the following
   
 # Running Offboard Control Simulations in Gazebo
 
-## Catkin Workspace
+## 1)Catkin Workspace
 Ensure your catkin workspace directory has been made as this is where the ROS packages and scripts are stored.
 
-## PX4-Autopilot Software
+## 2)PX4-Autopilot Software
+Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly.
+
+Use the link below and follow the instructions for "Download the PX4 Code"
+
+  https://docs.px4.io/main/en/dev_setup/building_px4.html
 
 
 
