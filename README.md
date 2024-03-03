@@ -5,11 +5,13 @@ Editors: Joshua Caratao
 ## **Description**
 As part of Texas Aerial Robotics (TAR) I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle.
 
-Each Folder is a separate ROS Package. 
+Each Folder is a separate ROS Package that should be placed into your catkin_ws/src directory. 
 
 The Controls package deals with interfacing the ROS Nodes with the Pixhawk Flight controller to recieve and publish control commands and implementing control algorithms
 
 The Computer Vision package deals with the detection of Aruco markers and estimation of its pose with respect to the camera frame.
+
+The Simulation_files folder are collection of model files and world files for simulation in gazebo.
 
 ## **Hardware Note**
 These packages were developed for a UAV platform that uses a pixhawk flight controller running the PX4-autpilot firmware. Using a different flight controller, such as ArduPilot, will prove to be incompatible with the controls package.
@@ -90,13 +92,33 @@ Ensure your catkin workspace directory has been made as this is where the ROS pa
 Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly.
 
 Use the link below and follow the instructions for "Download the PX4 Code"
-
+```
    https://docs.px4.io/main/en/dev_setup/building_px4.html
+```
+  Alternatively, just copy and paste this command into your terminal while in your home directory
 
-   Alternatively, just copy and paste this command into your terminal in your home directory
-
+```
    git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+```
+  This will clone the very latest ("main") version of the PX4-Autopilot Repository into the current directory you are in.
 
+  You should see a folder called "PX4-Autopilot" in your home directory. We will do more with this later
+
+## 3) Clone this repository
+
+Next, we need to clone and download this repository into your catkin_ws 
+
+First, navigate to your catkin workspace directory using 
+
+```
+cd ~/catkin_ws/
+```
+After navigating into your catkin workspace, clone this repository into with the following command
+
+```
+git clone 
+```
+  
  
 
 
