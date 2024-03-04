@@ -89,6 +89,10 @@ The output should be similar to the following
 
   
 # Running Offboard Control Simulations in Gazebo
+![DroneSim3](https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages/assets/53455636/1270df55-0558-4ec1-ae33-525e4e2d2d8d)
+![DroneSim1](https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages/assets/53455636/2e9cc587-abd8-4620-9895-bb4f70be4079)
+![droneSim4](https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages/assets/53455636/43213459-5d2d-4936-bced-2494a6ccb0f9)
+
 If you have already completed the steps above and want to run offboard control simulations involving aruco marker detection and positioning of the drone precisely over an aruco marker through a simulated downward facing drone camera, you can follow these steps below.
 
 NOTE: Offboard control refers to control of the UAV/Drone fully autonomously through ROS and the companion computer rather than through a Ground Control Application or remote controller. 
