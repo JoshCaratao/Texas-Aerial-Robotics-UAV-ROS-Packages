@@ -144,7 +144,7 @@ gazebo
 ```
 
   You should also see the folder called "PX4-Autopilot" in your home directory.
-  #### NOTE: you may run into issues with OpenCV later. 
+  #### NOTE 1: you may run into issues with OpenCV later. 
   If you run into OpenCV Version conflict issues, you will need to add a line into the CMakeLists.txt file of the "sitl_gazebo-classic" folder in the PX4-Autopilot folder to specify the version of OpenCV you want to use (assuming the conflict is due to having more than 1 version installed). If you need to do this, navigate to the proper directory
 ```
 cd /home/ubuntu/PX4-Autopilot/Tools/simulation/gazebo-classic
@@ -155,6 +155,26 @@ NOTE: For my use, I specified to use version 3.2.0 but you may choose to specify
 find_package (OpenCV 3.2.0 REQUIRED)
 ```
 This should ensure the the simulation uses the OpenCV version installed from your ROS installation rather than an OpenCV version you may have installed system-wide.
+
+#### NOTE 2: You may run into pathing errors for the PX4 packages. To solve this follow the following instructions
+Navigate to home directory
+```
+cd
+```
+Open .bashrc file in your code editor. This command assumes you are using vscode I believe.
+```
+code .bashrc
+```
+Add the following lines at the bottom of the .bashrc file
+```
+# Catkin workspace setup
+source ~/catkin_ws/devel/setup.bash
+
+# Include necessary package paths for PX4-Autopilot SITL Simulations
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot
+export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:~/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic
+export GAZEBO_PLUGIN_PATH=$GAZEBO_PLUGIN_PATH:/usr/lib/x86_64-linux-gnu/gazebo-9/plugins
+```
 
 ## 3) Clone and install MAVROS and MAVlink Packages
 These packages are necessary for our computer/jetson to communicate and interact with our pixhawk/flghtcontroller. MAVROS acts as a bridge between our ROS system, translating our ROS messages into MAVLink messages that our pixhawk and PX4-Autopilot software can understand.
@@ -234,10 +254,20 @@ Copy the "aruco_sim.world" file from the "world_files" folder in my simulation f
 PATH_TO_FOLDER/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds
 ```
 
+## 6) Launching the Simulation
+After ensuring all the packages have been successfully built and assuming there are no more errors, you can now run the simulation in gazebo
 
+Navigate to catkin workspace from home directory
+```
+cd catkin_ws
+```
+Launch simulation
+```
+roslaunch controls start_offb_payload_sim.launch
+```
+This launch file will launch the "mavros_posix_sitl.launch" file mentioned earlier as well as the "Offb_Payload_Sim.cpp" node, which is responsible for the offboard control of this simulated drone, and the "aruco_node_sim.py" node which subscribes to the simulated drone camera topic and performs aruco marker detection.
 
-
-
+If the simulation works properly, both the gazebo simulation and a separate window showing the video feed from the simulated drone camera along with detection of the aruco markers. You should be able to observe the drone take off from an initial aruco marker, position itself over a second aruco marker using a feedback Closed-Loop Control algorithm (PID), stay there for a few seconds, and then return to the original aruco marker and land. This is to simulate a drone takeing off, heading to a target (aruco marker), dropping a payload, and then returning to homebase and landing.
 
 
 
