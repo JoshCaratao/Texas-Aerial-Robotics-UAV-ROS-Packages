@@ -167,7 +167,9 @@ Clone my "UAV Simulation Files" Repository into your home directory (doesn't rea
 git clone https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-Simulation-Files.git
 ```
 
-Included are a variety of gazebo model files, world file and a launch file necessary for our simulations.
+Included are a variety of gazebo model files, world file and a launch file necessary for our simulations. These will all need to be copied and pasted into proper directories for the simulation to run properly.
+
+CONTINUE HERE, NOT FINISHED YET
 
 
 
