@@ -3,19 +3,20 @@
 Editors: Joshua Caratao
 
 ## **Description**
-As part of Texas Aerial Robotics (TAR) I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle.
+As part of Texas Aerial Robotics (TAR) Drone Group 2 my team and I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle through integration with the PX4 Flight stack.
 
-Each Folder is a separate ROS Package that should be placed into your catkin_ws/src directory. 
+Each Folder is a separate ROS Package that should be placed into your catkin_ws/src directory. (Directions for installing these packages are in the simulation documentation below) 
 
-The Controls package deals with interfacing the ROS Nodes with the Pixhawk Flight controller to recieve and publish control commands and implementing control algorithms
+### Controls Package
+The Controls package deals with interfacing the ROS Nodes with the Pixhawk Flight controller to recieve and publish control commands and implementing control algorithms. Currently, we are working on programming scripts for precision positioning over an aruco marker through the implementation of a Proportional-Integral-Derivative (PID) Controller. 
+To validate this control system for precision positioning and landing, we have also developed scripts for integrating this control into a Gazebo Software-In-The-Loop (SITL) simulation environment that involves a drone, camera, computer vision scripts, aruco markers, our control system, and the PX4 flight stack, allowing us to validate and test our precision control system prior to more dangerous physical testing.
 
-The Computer Vision package deals with the detection of Aruco markers and estimation of its pose with respect to the camera frame.
-
-The Simulation_files folder are collection of model files and world files for simulation in gazebo.
+### Computer Vision Package
+The Computer Vision package deals with interfacing the ROS system with the drone camera hardware and detection of Aruco markers and estimation of its pose with respect to the camera frame. Just like with the Controls Package, we have also developed scripts specifically for SITL simulation in the Gazebo enviroment, allowing us to simulate the aruco marker detection virtually.
 
 ## **Hardware Note**
 These packages were developed for a UAV platform that uses a pixhawk flight controller running the PX4-autpilot firmware. Using a different flight controller, such as ArduPilot, will prove to be incompatible with the controls package.
-Additionally, our drone uses a Nvidia Jetson TX2 paired with an orbitty carrier board as our companion computer and a regular logitech webcam for aruco marker computer vision.
+Additionally, our drone uses a Nvidia Jetson TX1 paired with an orbitty carrier board as our companion computer and a regular logitech webcam for aruco marker computer vision.
 
 
 ## **Software Note (Package Dependencies)**
@@ -43,7 +44,9 @@ Other Package dependencies include MAVROS, Mavlink, and OpenCV(c++ and Python ve
   
   This will be a critical component of our drone as OpenCV will allow us to interface cameras with our ROS program and perform tasks like Aruco Marker Detection/Pose Estimation and Simultaneous Localization and Mapping (SLAM).
 
-  For our purposes, I recommend installing OpenCV for C++, which will take longer, but you can also install OpenCV for Python if you want
+  For our purposes, I recommend installing OpenCV for C++, which will take longer, but you can also install OpenCV for Python if you want.
+
+  NOTE: OpenCV may already be installed as part of the ROS installations (I believe depending on which ROS installation size option you choose). Thus, installing OpenCV again may introduce some conflict errors down the road. However, this can be fixed by specifying the OpenCV version you want to use within the "CMakeLists.txt" file of your ROS packages.
 
 #### **OpenCV with C++**
 
@@ -84,6 +87,9 @@ The output should be similar to the following
 
   
 # Running Offboard Control Simulations in Gazebo
+If you have already completed the steps above and want to run offboard control simulations involving aruco marker detection and positioning of the drone precisely over an aruco marker through a simulated downward facing drone camera, you can follow these steps below.
+
+NOTE: Offboard control refers to control of the UAV/Drone fully autonomously through ROS and the companion computer rather than through a Ground Control Application or remote controller. 
 
 ## 1) Catkin Workspace
 Ensure your catkin workspace directory has been made as this is where the ROS packages and scripts are stored.
