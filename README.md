@@ -1,4 +1,4 @@
-# **Unmanned Aerial Vehicle ROS Packages**
+# ** Texas Aerial Robotics (TAR) UAV ROS Packages**
 
 Editors: Joshua Caratao
 
