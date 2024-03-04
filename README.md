@@ -2,7 +2,7 @@
 
 Editors: Joshua Caratao
 
-Last Updated: 3/3/2024
+Last Updated: 3/4/2024
 
 ## **Description**
 As part of Texas Aerial Robotics (TAR) Drone Group 2 my team and I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle through integration with the PX4 Flight stack.
@@ -94,6 +94,8 @@ The output should be similar to the following
 ![droneSim4](https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages/assets/53455636/43213459-5d2d-4936-bced-2494a6ccb0f9)
 
 If you have already completed the steps above and want to run offboard control simulations involving aruco marker detection and positioning of the drone precisely over an aruco marker through a simulated downward facing drone camera, you can follow these steps below.
+
+This Simulation environment was developed to better test and validate both our detection scripts and PID Control algorithms for positioning our drone over an aruco marker wiht precision
 
 NOTE: Offboard control refers to control of the UAV/Drone fully autonomously through ROS and the companion computer rather than through a Ground Control Application or remote controller. 
 
