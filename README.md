@@ -203,7 +203,45 @@ git clone https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-Simulation-Fi
 
 Included are a variety of gazebo model files, world file and a launch file necessary for our simulations. These will all need to be copied and pasted into proper directories for the simulation to run properly.
 
-CONTINUE HERE, NOT FINISHED YET
+After the Simulations files are finished downloading, we can move on to copying/pasting them to the proper directories. 
+
+### mavros_posix_sitl.launch file
+Copy the "mavros_posix_sitl.launch" file iincluded in my simulation files into following directory
+NOTE: There should already be a file called this in the PX4-Autopilot/launch directory. Thus, make sure to delete that first before copying this new version in.
+```
+PATH_TO_FOLDER/PX4-Autopilot/launch
+```
+This launch file is responsible for launching MAVROS, PX4 SITL, Gazebo environment, and spawning vehicle. 
+
+### Aruco Models
+Copy both the "aruco_6x6_0" and "aruco_6x6_1" folders included in "aruco_models" folder of my simulation files. Paste them into the following directory
+```
+PATH_TO_FOLDER/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models 
+```
+These models are necessary for simulating the aruco markers within the gazebo environment.
+
+### Iris Model
+Copy the "iris" model folder included in "iris_models" folder of my simulation files. Paste them into the following directory
+NOTE: There should already be an "iris" model folder within this directory. You will need to delete this preexisting one before copying this new one in
+```
+PATH_TO_FOLDER/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/models
+```
+Unlike the pre-existing iris model, this iris model has been modified to include a downward facing camera on the bottom of the drone that publishes images to a specific image topic through the ROS environment. 
+
+### World file
+Copy the "aruco_sim.world" file from the "world_files" folder in my simulation files into the following directory
+```
+PATH_TO_FOLDER/PX4-Autopilot/Tools/simulation/gazebo-classic/sitl_gazebo-classic/worlds
+```
+
+
+
+
+
+
+
+
+
 
 
 
