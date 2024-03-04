@@ -95,7 +95,7 @@ The output should be similar to the following
 
 If you have already completed the steps above and want to run offboard control simulations involving aruco marker detection and positioning of the drone precisely over an aruco marker through a simulated downward facing drone camera, you can follow these steps below.
 
-This Simulation environment was developed to better test and validate both our detection scripts and PID Control algorithms for positioning our drone over an aruco marker wiht precision
+This Simulation environment was developed to better test and validate both our detection scripts and PID Control algorithms for positioning our drone over an aruco marker with precision prior to physical testing.
 
 NOTE: Offboard control refers to control of the UAV/Drone fully autonomously through ROS and the companion computer rather than through a Ground Control Application or remote controller. 
 
