@@ -147,11 +147,11 @@ This is important, as our ROS Packages need to be in this folder within our catk
 
 After navigating into your catkin workspace, clone this repository with the following command
 ```
-git clone https://github.com/JoshCaratao/Unmanned-Aerial-Vehicle-ROS-Packages.git 
+git clone https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages.git 
 ```
 You should now see both of these packages in the "src" folder of your catkin workspace
 
-within your catkin workspace directory, rebuild the workspace and newly installed packages using the following command to ensure all the packages build correctly and that there arent any issues.
+within your catkin workspace directory, rebuild the workspace and newly installed packages using the following command to ensure all the packages build correctly and that there aren't any issues.
 
 ```
 catkin build
