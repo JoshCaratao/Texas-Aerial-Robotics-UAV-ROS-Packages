@@ -109,11 +109,13 @@ Use the link below and follow the instructions for "Download the PX4 Code"
   This will clone the very latest ("main") version of the PX4-Autopilot Repository into the current directory you are in.
 
   You should see a folder called "PX4-Autopilot" in your home directory.
-  ### NOTE: you may run into compatibility issues with OpenCV later. If so, add a line into the CMakeLists.txt file of the "sitl_gazebo-classic" folder in the PX4-Autopilot folder. If you need to do this, navigate to the proper directory
+  ### NOTE: you may run into issues with OpenCV later. 
+  If you run into OpenCV Version conflict issues, you will need to add a line into the CMakeLists.txt file of the "sitl_gazebo-classic" folder in the PX4-Autopilot folder to specify the version of OpenCV you want to use (assuming the conflict is due to having more than 1 version installed). If you need to do this, navigate to the proper directory
 ```
 cd /home/ubuntu/PX4-Autopilot/Tools/simulation/gazebo-classic
 ``` 
 within this directory, open the CMakeLists.txt file in your code editor and add the following line under "find_package(gazebo REQUIRED)"
+NOTE: For my use, I specified to use version 3.2.0 but you may choose to specify the version on your own system.
 
 ```
 find_package (OpenCV 3.2.0 REQUIRED)
@@ -133,17 +135,17 @@ Make sure to rebuild your catkin workspace after installing these by running the
 catkin build
 ```
 
-## 4) Clone this ROS Package Repository
+## 4) Clone this Texas Aerial Robotics ROS Package Repository
 
-Next, we need to clone and download this repository into your catkin_ws. These packages provide necessary scripts/Nodes for simulating precision positioning over a detected aruco marker 
+Next, we need to clone and download this Texas Aerial Robotics repository into your catkin_ws. As mentioned above these packages provide the necessary scripts/Nodes for simulating precision positioning control over a detected aruco marker
 
 First, navigate to your catkin workspace directory and into the "src" folder using
 ```
 cd ~/catkin_ws/src
 ```
-This is important as our ROS Packages need to be in this folder within our catkin workspace
+This is important, as our ROS Packages need to be in this folder within our catkin workspace
 
-After navigating into your catkin workspace, clone this repository into with the following command
+After navigating into your catkin workspace, clone this repository with the following command
 ```
 git clone https://github.com/JoshCaratao/Unmanned-Aerial-Vehicle-ROS-Packages.git 
 ```
