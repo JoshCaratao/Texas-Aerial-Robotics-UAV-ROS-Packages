@@ -96,29 +96,61 @@ NOTE: Offboard control refers to control of the UAV/Drone fully autonomously thr
 ## 1) Catkin Workspace
 Ensure your catkin workspace directory has been made as this is where the ROS packages and scripts are stored.
 
-## 2) PX4-Autopilot Software
-Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly.
+## 2) Install PX4-Autopilot Software and Gazebo Simulator
+Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly. Additionally, Gazebo is the actual physics simulator that allows us to run these simulations.
 
-Use the link below and follow the instructions for "Download the PX4 Code"
+Use the link below and follow the instructions for "Gazebo, JMAVSim and NuttX (Pixhawk) Targets"
 ```
-   https://docs.px4.io/main/en/dev_setup/building_px4.html
+https://docs.px4.io/v1.12/en/dev_setup/dev_env_linux_ubuntu.html#gazebo-jmavsim-and-nuttx-pixhawk-targets
 ```
-  Alternatively, just copy and paste this command into your terminal while in your home directory
+  Alternatively, just copy and paste the following commands into your terminal while in your home directory
 
+This will clone the very latest ("main") version of the PX4-Autopilot Repository into the current directory you are in.
 ```
-   git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 ```
-  This will clone the very latest ("main") version of the PX4-Autopilot Repository into the current directory you are in.
 
-  You should see a folder called "PX4-Autopilot" in your home directory.
-  ### NOTE: you may run into issues with OpenCV later. 
+This will run a script to set up a development environment that includes Gazebo 9 and jMAVSim simulators, and/or the NuttX/Pixhawk toolchain.(Realistically, we only really need Gazebo and the other simulators are not necessarily needed). 
+```
+bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
+```
+
+
+NOTE: If the above bash script fails to install gazebo, you may have to manually install gazebo instead, with the following commands
+
+Setup your computer to accept software from http://packages.osrfoundation.org:
+```
+sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
+```
+
+Setup keys:
+```
+wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
+```
+
+Reload software list:
+```
+sudo apt update
+```
+
+Install Gazebo:
+```
+sudo apt install gazebo9 libgazebo9-dev
+```
+
+Restart the computer after completion. You should now have gazebo installed as well as the PX4-Autopilot Software. Try using the following command in your terminal to test and launch gazebo
+```
+gazebo
+```
+
+  You should also see the folder called "PX4-Autopilot" in your home directory.
+  #### NOTE: you may run into issues with OpenCV later. 
   If you run into OpenCV Version conflict issues, you will need to add a line into the CMakeLists.txt file of the "sitl_gazebo-classic" folder in the PX4-Autopilot folder to specify the version of OpenCV you want to use (assuming the conflict is due to having more than 1 version installed). If you need to do this, navigate to the proper directory
 ```
 cd /home/ubuntu/PX4-Autopilot/Tools/simulation/gazebo-classic
 ``` 
 within this directory, open the CMakeLists.txt file in your code editor and add the following line under "find_package(gazebo REQUIRED)"
 NOTE: For my use, I specified to use version 3.2.0 but you may choose to specify the version on your own system.
-
 ```
 find_package (OpenCV 3.2.0 REQUIRED)
 ```
