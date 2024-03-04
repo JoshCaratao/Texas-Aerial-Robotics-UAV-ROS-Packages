@@ -1,6 +1,7 @@
 # **Texas Aerial Robotics (TAR) UAV ROS Packages**
 
 Editors: Joshua Caratao
+Last Updated: 3/3/2024
 
 ## **Description**
 As part of Texas Aerial Robotics (TAR) Drone Group 2 my team and I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle through integration with the PX4 Flight stack.
