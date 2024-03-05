@@ -10,7 +10,7 @@ As part of 2023-Present Texas Aerial Robotics (TAR) Drone Group 2 my team and I 
 Each Folder is a separate ROS Package that should be placed into your catkin_ws/src directory. (Directions for installing these packages are in the simulation documentation below) 
 
 ### Controls Package
-The Controls package deals with interfacing the ROS Nodes with the Pixhawk Flight controller to recieve and publish control commands and implementing control algorithms. Currently, we are working on programming scripts for precision positioning over an aruco marker through the implementation of a Proportional-Integral-Derivative (PID) Controller. 
+The Controls package deals with interfacing the ROS Nodes with the Pixhawk Flight controller to recieve and publish control commands and implement control algorithms. Currently, we are working on programming scripts for precision positioning over an aruco marker through the implementation of a Proportional-Integral-Derivative (PID) Controller. 
 To validate this control system for precision positioning and landing, we have also developed scripts for integrating this control into a Gazebo Software-In-The-Loop (SITL) simulation environment that involves a drone, camera, computer vision scripts, aruco markers, our control system, and the PX4 flight stack, allowing us to validate and test our precision control system prior to more dangerous physical testing.
 
 ### Computer Vision Package
