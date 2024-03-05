@@ -5,7 +5,7 @@ Editors: Joshua Caratao
 Last Updated: 3/4/2024
 
 ## **Description**
-As part of Texas Aerial Robotics (TAR) Drone Group 2 my team and I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle through integration with the PX4 Flight stack.
+As part of 2023-Present Texas Aerial Robotics (TAR) Drone Group 2 my team and I have contributed in the development of several ROS packages that allow for the offboard control and autonomous capability of an unmanned aerial vehicle through integration with the PX4 Flight stack.
 
 Each Folder is a separate ROS Package that should be placed into your catkin_ws/src directory. (Directions for installing these packages are in the simulation documentation below) 
 
