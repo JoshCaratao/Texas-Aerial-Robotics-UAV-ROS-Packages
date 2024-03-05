@@ -275,6 +275,8 @@ This launch file will launch the "mavros_posix_sitl.launch" file mentioned earli
 
 If the simulation works properly, both the gazebo simulation and a separate window showing the video feed from the simulated drone camera along with detection of the aruco markers. You should be able to observe the drone take off from an initial aruco marker, position itself over a second aruco marker using a feedback Closed-Loop Control algorithm (PID), stay there for a few seconds, and then return to the original aruco marker and land. This is to simulate a drone takeing off, heading to a target (aruco marker), dropping a payload, and then returning to homebase and landing.
 
+NOTE:: If the goals of your autonomous drones are different then what is tested in these simulations. You could easily modify the detection code, control code, and even the simulation environment to better suit your needs. 
+
 
 
 
