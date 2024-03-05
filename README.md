@@ -105,7 +105,8 @@ Ensure your catkin workspace directory has been made as this is where the ROS pa
 ## 2) Install PX4-Autopilot Software and Gazebo Simulator
 Download and install the PX4-Autopilo software. This is crucial for running software-in-the-loop (SITL) simulations of our drone and is necesarry for our control package simulations to work correctly. Additionally, Gazebo is the actual physics simulator that allows us to run these simulations.
 
-Use the link below and follow the instructions for "Gazebo, JMAVSim and NuttX (Pixhawk) Targets"
+### Installing PX4 Source Code and development Tool Chain (Gazebo, jmavsim, other simulators)
+Use the link below and follow the instructions for "Gazebo, JMAVSim and NuttX (Pixhawk) Targets." 
 ```
 https://docs.px4.io/v1.12/en/dev_setup/dev_env_linux_ubuntu.html#gazebo-jmavsim-and-nuttx-pixhawk-targets
 ```
@@ -121,7 +122,7 @@ This will run a script to set up a development environment that includes Gazebo 
 bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 ```
 
-
+### Manual Gazebo Download (if above bash script fails)
 NOTE: If the above bash script fails to install gazebo, you may have to manually install gazebo instead, with the following commands
 
 Setup your computer to accept software from http://packages.osrfoundation.org:
