@@ -55,7 +55,9 @@ Other Package dependencies include MAVROS, Mavlink, and OpenCV(c++ and Python ve
   The installation can be completed by following the link below. Highly highly recommend following the "install from source" option. 
     https://linuxize.com/post/how-to-install-opencv-on-ubuntu-18-04/
 
-*IMPORTANT NOTES BEFORE INSTALLING*
+*IMPORTANT NOTES BEFORE INSTALLING*# # PX4-Autopilot Gazebo setup
+source ~/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.bash ~/PX4-Autopilot ~/PX4-Autopilot/build/px4_sitl_default
+
 
 If you do not need the contrib_module files then on step 2, do not clone the “opencv_contrib repository, also ensure to exclude “-D OPENCV_EXTRA_MODULES_PATH=~/opencv_build/opencv_contrib/modules \” when running the cmake command:  
 
@@ -174,6 +176,9 @@ code .bashrc
 ```
 Add the following lines at the bottom of the .bashrc file
 ```
+# # PX4-Autopilot Gazebo setup
+source ~/PX4-Autopilot/Tools/simulation/gazebo-classic/setup_gazebo.bash ~/PX4-Autopilot ~/PX4-Autopilot/build/px4_sitl_default
+
 # Catkin workspace setup
 source ~/catkin_ws/devel/setup.bash
 
