@@ -210,7 +210,9 @@ After navigating into your catkin workspace, clone this repository with the foll
 ```
 git clone https://github.com/JoshCaratao/Texas-Aerial-Robotics-UAV-ROS-Packages.git 
 ```
-You should now see both of these packages in the "src" folder of your catkin workspace
+This should clone a folder with the name "Texas-Aerial-Robotics-UAV-ROS-Packages" Remove the "Controls" and "Computer_Vision" package from this folder and make sure they are in the "src" folder of your catkin_ws. You can delete the previously cloned folder after doing so.
+
+You should now see both of these packages in the "src" folder of your catkin workspace 
 
 within your catkin workspace directory, rebuild the workspace and newly installed packages using the following command to ensure all the packages build correctly and that there aren't any issues.
 
